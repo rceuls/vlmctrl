@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -16,14 +15,18 @@ const mqttBroker = "tcp://localhost:1883"
 const mqttClientID = "vctr_service"
 
 var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("TOPIC: %s\n", msg.Topic())
-	fmt.Printf("MSG: %s\n", msg.Payload())
+	log.Printf("TOPIC: %s -MSG: %s\n", msg.Topic(), msg.Payload())
+	payload := string(msg.Payload())
+	translated := convert(payload)
+	for _, cmd := range translated {
+		sendCommand(cmd)
+	}
 }
 
 func cleanup(client mqtt.Client) {
 
 	if token := client.Unsubscribe(mqttTopic); token.Wait() && token.Error() != nil {
-		fmt.Println(token.Error())
+		log.Fatal(token.Error())
 		os.Exit(1)
 	}
 
@@ -59,7 +62,7 @@ func main() {
 	}
 
 	if token := c.Subscribe(mqttTopic, 0, nil); token.Wait() && token.Error() != nil {
-		fmt.Println(token.Error())
+		log.Fatal(token.Error())
 		os.Exit(1)
 	}
 
