@@ -44,7 +44,6 @@ func setupCloseHandler(client mqtt.Client) {
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
 
-	// mqtt.DEBUG = log.New(os.Stdout, "", 0)
 	mqtt.ERROR = log.New(os.Stdout, "", 0)
 
 	opts := mqtt.NewClientOptions().AddBroker(mqttBroker).SetClientID(mqttClientID)
