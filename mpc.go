@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"os/exec"
 )
 
@@ -33,7 +31,8 @@ func sendCommand(msg mpcCommand) {
 	log.Println(args)
 	output, err := exec.Command("mpc", args...).CombinedOutput()
 	if err != nil {
-		os.Stderr.WriteString(err.Error())
+		log.Print(err.Error())
+	} else {
+		log.Print(string(output))
 	}
-	fmt.Println(string(output))
 }

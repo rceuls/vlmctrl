@@ -4,7 +4,7 @@ import "strings"
 
 func convert(input string) []mpcCommand {
 	splittedInput := strings.Split(input, ",")
-	result := make([]mpcCommand, len(splittedInput))
+	result := make([]mpcCommand, len(splittedInput), len(splittedInput))
 	for index, cmd := range splittedInput {
 		switch cmd {
 		case "v_up":
